@@ -1,0 +1,4 @@
+Services Catalog Api Port => http://localhost:5011
+
+CatalogDB = Mongo
+User identityServer = sql
