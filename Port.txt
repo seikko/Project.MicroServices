@@ -2,3 +2,18 @@ Services Catalog Api Port => http://localhost:5011
 
 CatalogDB = Mongo
 User identityServer = sql
+
+ IdentityServer end pointler{
+
+"issuer": "https://localhost:5001",
+    "jwks_uri": "https://localhost:5001/.well-known/openid-configuration/jwks",
+    "authorization_endpoint": "https://localhost:5001/connect/authorize",
+    "token_endpoint": "https://localhost:5001/connect/token",
+    "userinfo_endpoint": "https://localhost:5001/connect/userinfo",
+    "end_session_endpoint": "https://localhost:5001/connect/endsession",
+    "check_session_iframe": "https://localhost:5001/connect/checksession",
+    "revocation_endpoint": "https://localhost:5001/connect/revocation",
+    "introspection_endpoint": "https://localhost:5001/connect/introspect",
+    "device_authorization_endpoint": "https://localhost:5001/connect/deviceauthorization",
+
+}

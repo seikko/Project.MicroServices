@@ -2,57 +2,72 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityServer4;
 using IdentityServer4.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Course.IdentityServer
 {
     public static class Config
     {
+
+        public static IEnumerable<ApiResource> ApiResources =>
+            new ApiResource[]//usersiz giris full erişim
+        {
+            new ApiResource("resource_catalog"){Scopes= { "catalog_fullpermisson" }},
+            new ApiResource("resource_photoStock"){Scopes= { "photo_stock_fullpermisson" }},
+           new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
+        };
         public static IEnumerable<IdentityResource> IdentityResources =>
-                   new IdentityResource[]
-                   {
-                new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
-                   };
+            new IdentityResource[]//kısıtlı gırıs user giris 
+         {
+             //token içerisinde gondericeklerimiz
+             new IdentityResources.Email(),
+             new IdentityResources.OpenId(),
+             new IdentityResources.Profile(),
+             new IdentityResource(){Name="roles",DisplayName="Roles",Description="Kullanıcı rolleri",UserClaims = new[]{"role"}}
+         };
 
         public static IEnumerable<ApiScope> ApiScopes =>
-            new ApiScope[]
+            new ApiScope[]//usersiz giris full erişim
             {
-                new ApiScope("scope1"),
-                new ApiScope("scope2"),
+              new ApiScope("catalog_fullpermisson","Catalog API için full erişim"),
+              new ApiScope("photo_stock_fullpermisson","Photo Stock API için full erişim"),
+              new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
             };
 
         public static IEnumerable<Client> Clients =>
             new Client[]
             {
-                // m2m client credentials flow client
-                new Client
-                {
-                    ClientId = "m2m.client",
-                    ClientName = "Client Credentials Client",
+                
+              new Client//ClientCredentials
+              {
+                  ClientName = "Asp.Net Core MVC", // Client name 
+                  ClientId = "WebMvcClient", // Client id 
+                  ClientSecrets = {new Secret("secret".Sha256())}, // Client Sifresi ? 
+                  AllowedGrantTypes = GrantTypes.ClientCredentials, // Grant Type ne  postmandan istek atarken grant_type client_credentials ? 
+                  AllowedScopes = { "catalog_fullpermisson", "photo_stock_fullpermisson",IdentityServerConstants.LocalApi.ScopeName} // Usersiz Hangi api ye istek yapabilir ?
+              },
 
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = { new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256()) },
+               new Client//ClientCredentials
+              {
+                  ClientName = "Asp.Net Core MVC", // Client name 
+                  ClientId = "WebMvcClientForUser", // Client id 
+                  AllowOfflineAccess = true, // OfflineAccess icin izin
+                  ClientSecrets = {new Secret("secret".Sha256())}, 
+                  AllowedGrantTypes = GrantTypes.ResourceOwnerPassword, //postmandan istek atarken grant_type password ?,
+                  AllowedScopes = {IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.Address, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess, IdentityServerConstants.LocalApi.ScopeName, "roles" }, //Token icinde neler gondereyim.
+                  //OfflineAccess = kullanıcı offline olsa dahi ben elimdeki refresh token ile kullanıcı ıcın yeni bir token alabilirim. OfllineAccess i kaldırırsak  elimde refresh token olmadıgı ıcın kullanıcıdan email ve password almak zorundayım. 
+                   AccessTokenLifetime = 1*60*60, //AccessToken'in omru
+                   RefreshTokenExpiration = TokenExpiration.Absolute,
+                   AbsoluteRefreshTokenLifetime = (int)(DateTime.Now.AddDays(60)-DateTime.Now).TotalSeconds,//Refresh token in suresi 60 gün - simdiki gün'ün saniyesi.
+                   RefreshTokenUsage = TokenUsage.ReUse
 
-                    AllowedScopes = { "scope1" }
-                },
 
-                // interactive client using code flow + pkce
-                new Client
-                {
-                    ClientId = "interactive",
-                    ClientSecrets = { new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256()) },
+                   }
 
-                    AllowedGrantTypes = GrantTypes.Code,
+              };
+    };
 
-                    RedirectUris = { "https://localhost:44300/signin-oidc" },
-                    FrontChannelLogoutUri = "https://localhost:44300/signout-oidc",
-                    PostLogoutRedirectUris = { "https://localhost:44300/signout-callback-oidc" },
-
-                    AllowOfflineAccess = true,
-                    AllowedScopes = { "openid", "profile", "scope2" }
-                },
-            };
-    }
 }

@@ -10,6 +10,8 @@ using AutoMapper;
 using Course.Services.Catalog.Configurations;
 using Microsoft.Extensions.Options;
 using Course.Services.Catalog.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace Course.Services.Catalog
 {
@@ -25,6 +27,16 @@ namespace Course.Services.Catalog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
+
+                options.Authority = Configuration["IdentityServerUrl"];//  token dagýtmaktan gorevli urli alcak.
+                options.Audience = "resource_catalog";//IdentityServerdaki config dosyasýndan geliyor.
+                options.RequireHttpsMetadata = false;
+
+
+            });
+
+
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddAutoMapper(typeof(Startup));
@@ -33,11 +45,16 @@ namespace Course.Services.Catalog
             {
                 return sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
             });
-            services.AddControllers();
+            services.AddControllers(opt => {
+                opt.Filters.Add(new AuthorizeFilter());
+                });
+              
             services.AddSwaggerGen(c => 
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Course.Services.Catalog", Version = "v1" });
             });
+
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +68,7 @@ namespace Course.Services.Catalog
             }
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

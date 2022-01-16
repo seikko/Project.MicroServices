@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Course.IdentityServer.Services;
 
 namespace Course.IdentityServer
 {
@@ -28,6 +29,7 @@ namespace Course.IdentityServer
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLocalApiAuthentication();
             services.AddControllersWithViews();
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -47,13 +49,15 @@ namespace Course.IdentityServer
                 // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
                 options.EmitStaticAudienceClaim = true;
             })
-                .AddInMemoryIdentityResources(Config.IdentityResources)
+                .AddInMemoryIdentityResources(Config.IdentityResources) 
+                .AddInMemoryApiResources(Config.ApiResources)// api resources ekledik.
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients)
                 .AddAspNetIdentity<ApplicationUser>();
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
+            builder.AddResourceOwnerValidator<IdentityResourcesOwnerPasswordValidation>();
 
             services.AddAuthentication()
                 .AddGoogle(options =>
@@ -73,13 +77,15 @@ namespace Course.IdentityServer
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                //app.UseDatabaseErrorPage();
             }
 
             app.UseStaticFiles();
 
             app.UseRouting();
             app.UseIdentityServer();
+            app.UseAuthentication();
+
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

@@ -51,9 +51,9 @@ namespace Course.IdentityServer
                     var userManager = sp.GetRequiredService<UserManager<ApplicationUser>>();
                     if (!userManager.Users.Any())
                     {
-                        userManager.CreateAsync(new ApplicationUser { UserName = "serkan", Email = "Sakcay415@gmail.com", City = "Istanbul" }, "123").Wait();//senkron calıs.
+                        userManager.CreateAsync(new ApplicationUser { UserName = "serkan", Email = "Sakcay415@gmail.com", City = "Istanbul" }, "Serk@n1q2w3e4r!!").Wait();//senkron calıs.
                     }
-                }
+                } 
                 Log.Information("Starting host...");
                 host.Run();
                 return 0;

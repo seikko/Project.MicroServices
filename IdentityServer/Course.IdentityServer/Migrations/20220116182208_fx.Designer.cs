@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Course.IdentityServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220115212306_initiall")]
-    partial class initiall
+    [Migration("20220116182208_fx")]
+    partial class fx
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
