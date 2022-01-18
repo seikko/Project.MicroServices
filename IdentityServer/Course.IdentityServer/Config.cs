@@ -16,7 +16,7 @@ namespace Course.IdentityServer
             new ApiResource[]//usersiz giris full erişim
         {
             new ApiResource("resource_catalog"){Scopes= { "catalog_fullpermisson" }},
-            new ApiResource("resource_photoStock"){Scopes= { "photo_stock_fullpermisson" }},
+            new ApiResource("photo_stock_catalog"){Scopes= { "photo_stock_fullpermisson" }},
            new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
         };
         public static IEnumerable<IdentityResource> IdentityResources =>
