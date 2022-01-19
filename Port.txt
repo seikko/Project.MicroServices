@@ -1,6 +1,7 @@
-Services Catalog Api Port => http://localhost:5011
 Services IdentityServer Api Port => http://localhost:5001
+Services Catalog Api Port => http://localhost:5011
 Services PhotoStock Api Port => http://localhost:5012
+Basket Api Port => http://localhost:5013
 
 CatalogDB = Mongo
 User identityServer = sql
