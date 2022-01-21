@@ -18,6 +18,7 @@ namespace Course.IdentityServer
             new ApiResource("resource_catalog"){Scopes= { "catalog_fullpermisson" }},
             new ApiResource("resource_photo_stock"){Scopes= { "photo_stock_fullpermisson" }},
             new ApiResource("resource_basket"){Scopes= { "basket_fullpermisson" }},
+            new ApiResource("resource_discount"){Scopes= { "discount_fullpermisson" }},
            new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
         };
         public static IEnumerable<IdentityResource> IdentityResources =>
@@ -36,6 +37,7 @@ namespace Course.IdentityServer
               new ApiScope("catalog_fullpermisson","Catalog API için full erişim"),
               new ApiScope("photo_stock_fullpermisson","Photo Stock API için full erişim"),
               new ApiScope("basket_fullpermisson","Basket API için full erişim"),
+              new ApiScope("discount_fullpermisson","Discount API için full erişim"),
               new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
             };
 
@@ -59,7 +61,7 @@ namespace Course.IdentityServer
                   AllowOfflineAccess = true, // OfflineAccess icin izin
                   ClientSecrets = {new Secret("secret".Sha256())}, 
                   AllowedGrantTypes =GrantTypes.ResourceOwnerPassword, //postmandan istek atarken grant_type password ?,
-                  AllowedScopes = { "basket_fullpermisson", IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.Address, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess, IdentityServerConstants.LocalApi.ScopeName, "roles" }, //Token icinde neler gondereyim.
+                  AllowedScopes = { "basket_fullpermisson", "discount_fullpermisson", IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.Address, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess, IdentityServerConstants.LocalApi.ScopeName, "roles" }, //Token icinde neler gondereyim.
                   //OfflineAccess = kullanıcı offline olsa dahi ben elimdeki refresh token ile kullanıcı ıcın yeni bir token alabilirim. OfllineAccess i kaldırırsak  elimde refresh token olmadıgı ıcın kullanıcıdan email ve password almak zorundayım. 
                    AccessTokenLifetime = 1*60*60, //AccessToken'in omru
                    RefreshTokenExpiration = TokenExpiration.Absolute,
