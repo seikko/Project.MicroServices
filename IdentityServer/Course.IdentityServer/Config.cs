@@ -20,7 +20,9 @@ namespace Course.IdentityServer
             new ApiResource("resource_basket"){Scopes= { "basket_fullpermisson" }},
             new ApiResource("resource_discount"){Scopes= { "discount_fullpermisson" }},
             new ApiResource("resource_order"){Scopes= { "order_fullpermisson" }},
-           new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
+            new ApiResource("resource_payment"){Scopes= { "payment_fullpermisson" }},
+            new ApiResource("resource_gateway"){Scopes= { "gateway_fullpermisson" }},
+            new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
         };
         public static IEnumerable<IdentityResource> IdentityResources =>
             new IdentityResource[]//kısıtlı gırıs user giris 
@@ -40,6 +42,8 @@ namespace Course.IdentityServer
               new ApiScope("basket_fullpermisson","Basket API için full erişim"),
               new ApiScope("discount_fullpermisson","Discount API için full erişim"),
               new ApiScope("order_fullpermisson","Order API için full erişim"),
+              new ApiScope("payment_fullpermisson","Order API için full erişim"),
+              new ApiScope("gateway_fullpermisson","Gatway için full erişim"),
               new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
             };
 
@@ -53,7 +57,7 @@ namespace Course.IdentityServer
                   ClientId = "WebMvcClient", // Client id 
                   ClientSecrets = {new Secret("secret".Sha256())}, // Client Sifresi ? 
                   AllowedGrantTypes = GrantTypes.ClientCredentials, // Grant Type ne  postmandan istek atarken grant_type client_credentials ? 
-                  AllowedScopes = { "catalog_fullpermisson", "photo_stock_fullpermisson",IdentityServerConstants.LocalApi.ScopeName} // Usersiz Hangi api ye istek yapabilir ?
+                  AllowedScopes = { "catalog_fullpermisson", "photo_stock_fullpermisson", "gateway_fullpermisson", IdentityServerConstants.LocalApi.ScopeName} // Usersiz Hangi api ye istek yapabilir ?
               },
 
                new Client//ClientCredentials
@@ -63,7 +67,7 @@ namespace Course.IdentityServer
                   AllowOfflineAccess = true, // OfflineAccess icin izin
                   ClientSecrets = {new Secret("secret".Sha256())}, 
                   AllowedGrantTypes =GrantTypes.ResourceOwnerPassword, //postmandan istek atarken grant_type password ?,
-                  AllowedScopes = { "basket_fullpermisson", "discount_fullpermisson","order_fullpermisson", IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.Address, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess, IdentityServerConstants.LocalApi.ScopeName, "roles" }, //Token icinde neler gondereyim.
+                  AllowedScopes = { "basket_fullpermisson", "discount_fullpermisson","order_fullpermisson", "payment_fullpermisson", "gateway_fullpermisson", IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.Address, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess, IdentityServerConstants.LocalApi.ScopeName, "roles" }, //Token icinde neler gondereyim.
                   //OfflineAccess = kullanıcı offline olsa dahi ben elimdeki refresh token ile kullanıcı ıcın yeni bir token alabilirim. OfllineAccess i kaldırırsak  elimde refresh token olmadıgı ıcın kullanıcıdan email ve password almak zorundayım. 
                    AccessTokenLifetime = 1*60*60, //AccessToken'in omru
                    RefreshTokenExpiration = TokenExpiration.Absolute,

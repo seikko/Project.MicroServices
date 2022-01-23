@@ -1,9 +1,12 @@
+Gateway => http://localhost:5000
 Services IdentityServer Api Port => http://localhost:5001
 Services Catalog Api Port => http://localhost:5011
 Services PhotoStock Api Port => http://localhost:5012
 Basket Api Port => http://localhost:5013
 Discount Api Port => http://localhost:5014
 Order api port => http://localhost:5015
+Fake payment api port => http://localhost:5016
+
 
 CatalogDB = Mongo
 User identityServer = sql
