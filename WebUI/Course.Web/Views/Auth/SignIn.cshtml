@@ -1,0 +1,31 @@
+﻿@model Course.Web.Models.SigninRequest
+@{
+    ViewData["Title"] = "SignIn";
+}
+
+<div class="col-md-4 offset-md-4">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Üye Giriş</h5>
+            <div asp-validation-summary="ModelOnly"></div>
+            <form asp-controller="Auth" asp-action="SignIn">
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email address</label>
+                    <input type="email" asp-for="Email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                     <span class="text-danger" asp-validation-for="Email"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label">Password</label>
+                    <input type="password" asp-for="Password" class="form-control" id="exampleInputPassword1">
+                    <span class="text-danger" asp-validation-for="Password"></span>
+                </div>
+                <div class="mb-3 form-check">
+                    <input asp-for="IsRemember" class="form-check-input" id="exampleCheck1">
+                    <label asp-for="IsRemember" class="form-check-label" for="exampleCheck1"></label>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+
+        </div>
+    </div>
+</div>

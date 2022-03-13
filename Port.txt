@@ -7,6 +7,8 @@ Discount Api Port => http://localhost:5014
 Order api port => http://localhost:5015
 Fake payment api port => http://localhost:5016
 
+Web =>http://localhost:5010
+
 
 CatalogDB = Mongo
 User identityServer = sql
