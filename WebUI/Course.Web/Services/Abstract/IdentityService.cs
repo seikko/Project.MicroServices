@@ -42,7 +42,7 @@ namespace Course.Web.Services
             var disco = await _httpclient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
             {
 
-                Address = _serviceApiSettings.BaseUri,
+                Address = _serviceApiSettings.IdentityBaseUrl,
                 Policy = new DiscoveryPolicy { RequireHttps = false }
             });
             if (disco.IsError) throw disco.Exception;
@@ -74,13 +74,17 @@ namespace Course.Web.Services
 
         }
 
+        /// <summary>
+        /// Refresh Token Clear
+        /// </summary>
+        /// <returns></returns>
         public async Task RevokeRefreshToken()
         {
             #region Idendity Server  EndPointler 
             var disco = await _httpclient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
             {
 
-                Address = _serviceApiSettings.BaseUri,
+                Address = _serviceApiSettings.IdentityBaseUrl,
                 Policy = new DiscoveryPolicy { RequireHttps = false }
             });
 
@@ -112,7 +116,7 @@ namespace Course.Web.Services
             var disco = await _httpclient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
             {
 
-                Address = _serviceApiSettings.BaseUri,
+                Address = _serviceApiSettings.IdentityBaseUrl,
                 Policy = new DiscoveryPolicy { RequireHttps = false }
             });
 

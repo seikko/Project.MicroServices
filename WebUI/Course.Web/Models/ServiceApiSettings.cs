@@ -7,7 +7,13 @@ namespace Course.Web.Models
 {
     public class ServiceApiSettings
     {
-        public string BaseUri { get; set; }
+        public string IdentityBaseUrl { get; set; }
+        public string GatewayBaseUrl { get; set; }
         public string PhotoStockUri { get; set; }
+        public ServiceApi Catalog { get; set; }
+    }
+    public class ServiceApi
+    {
+        public string Path { get; set; }
     }
 }

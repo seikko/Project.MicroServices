@@ -1,5 +1,10 @@
+using Course.Shared.Services;
+using Course.Web.Controllers;
+using Course.Web.Handler;
 using Course.Web.Models;
 using Course.Web.Services;
+using Course.Web.Services.Abstract;
+using Course.Web.Services.Concretes;
 using Course.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -26,7 +31,25 @@ namespace Course.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            var servicesApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();             
+            services.AddHttpClient<IUserServices, UserServices>(opt=> {
+
+                opt.BaseAddress = new Uri(servicesApiSettings.IdentityBaseUrl);
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            services.AddScoped<ResourceOwnerPasswordTokenHandler>();
+            services.AddScoped<ClientCredentialTokenHandler>();
+            services.AddHttpClient<ICatalogServices, CatalogServices>(opt =>
+             {
+                 //url localhost:5000/services/catalog
+                 opt.BaseAddress = new Uri($"{servicesApiSettings.GatewayBaseUrl}/{servicesApiSettings.Catalog.Path}");
+             }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
+            services.AddScoped<IClientCridentialTokenServices, ClientCridentialTokenServices>();
+            services.AddScoped<ISharedIdentityServices, SharedIdentityServices>();
+          
             services.AddHttpContextAccessor();
+            services.AddAccessTokenManagement();
             services.AddHttpClient<IIdentityService, IdentityService>();
             services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
             services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
@@ -39,6 +62,7 @@ namespace Course.Web
 
 
              });
+
             services.AddControllersWithViews();
         }
 

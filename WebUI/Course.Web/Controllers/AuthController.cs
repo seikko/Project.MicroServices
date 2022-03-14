@@ -1,5 +1,7 @@
 ﻿using Course.Web.Models;
 using Course.Web.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -32,7 +34,13 @@ namespace Course.Web.Controllers
                 ModelState.AddModelError(String.Empty, x));
 
             }
-            return View();
+            return RedirectToAction("Index","User");
+        }
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await _identityService.RevokeRefreshToken();
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }
 }

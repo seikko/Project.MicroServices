@@ -7,11 +7,11 @@ namespace Course.Shared.Dtos
 {
     public class Response<T>
     {
-        public T Data { get; private set; }// dışarıdan set edilmesin private set
+        public T Data { get;   set; } 
         [JsonIgnore] //Responsun icinde statu code olmasın.
         public int StatusCode { get; set; }
         [JsonIgnore]
-        public bool IsSuccessfull { get; private  set; }
+        public bool IsSuccessfull { get;    set; }
 
         public List<string> Errors { get; set; }
         #region Static Factory Method

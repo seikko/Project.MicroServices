@@ -21,7 +21,7 @@ namespace Course.Services.Catalog.Controller
             _coursesService = coursesService;
         }
 
-        [HttpGet("getById")]
+        [HttpGet("{id}")]
         //todo category dto null donuyor bakılcak.
         public async Task<IActionResult> GetById(string id)
         {
@@ -43,7 +43,7 @@ namespace Course.Services.Catalog.Controller
             return CreateActionResultInstance(response);
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> Create(CourseCreateDto createDto)
         {
             var response = await _coursesService.CreateCourseAsync(createDto);
@@ -56,7 +56,7 @@ namespace Course.Services.Catalog.Controller
             var response = await _coursesService.UpdateCourseAsync(createDto);
             return CreateActionResultInstance(response);
         }
-        [HttpDelete("delete")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             var response = await _coursesService.DeleteCourseAsync(id);
