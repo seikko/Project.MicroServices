@@ -1,22 +1,24 @@
 ﻿
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Update";
 }
-@model CourseCreateModel
+@model CourseUpdateModel
 
 <div class="row">
     <div class="col-md-8 offset-md-2">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Kurs ekleme</h5>
-                <form asp-controller="Courses" asp-action="CourseCreate" method="post" enctype="multipart/form-data">
+                <h5 class="card-title">Kurs Güncelle</h5>
+                <form asp-controller="Courses" asp-action="Update" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly"></div>
 
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="UserId" />
+                    <input type="hidden" asp-for="Picture" />
 
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label" asp-for="CategoryId"></label>
                         <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.categoryList">
-                            <option value="">Kategori Seçiniz</option>
                         </select>
                         <span class="text-danger" asp-validation-for="CategoryId"></span>
 
@@ -46,7 +48,7 @@
                         <label asp-for="PhotoFormFile" class="form-label"></label>
                         <input type="file" asp-for="PhotoFormFile" class="form-control" />
                     </div>
-                    <button type="submit" class="btn btn-primary">Kursu Kaydet</button>
+                    <button type="submit" class="btn btn-primary">Kursu Güncelle</button>
                 </form>
             </div>
         </div>

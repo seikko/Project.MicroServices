@@ -24,8 +24,8 @@ namespace Course.Services.PhotoStock.Controllers
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/photos", file.FileName);
                 using var stream = new FileStream(path, FileMode.Create);
                 await file.CopyToAsync(stream, cancellationToken);
-                var returnPath = "photos/" + file.FileName;
-
+                var returnPath =  file.FileName;
+                    
                 PhotoDto photoDto = new() { Url = returnPath };
                 return CreateActionResultInstance(Response<PhotoDto>.Success(photoDto, 200));
             }

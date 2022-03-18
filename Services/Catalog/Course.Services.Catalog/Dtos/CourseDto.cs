@@ -18,11 +18,12 @@ namespace Course.Services.Catalog.Dtos
         public string Picture { get; set; }
 
         public DateTime CreatedDate { get; set; }
+        public string CategoryId { get; set; }
+     
 
         //Relational Properties
 
-        public string CategoryId { get; set; }
-        public Feature Feature { get; set; }
-        public Category Category { get; set; }
+        public FeatureDto Feature { get; set; }
+        public CategoryDto Categories { get; set; }
     }
 }

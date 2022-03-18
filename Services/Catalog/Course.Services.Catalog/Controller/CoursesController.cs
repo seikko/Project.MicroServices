@@ -53,7 +53,7 @@ namespace Course.Services.Catalog.Controller
         [HttpPut("update")]
         public async Task<IActionResult> Update(CourseUpdateDto createDto)
         {
-            var response = await _coursesService.UpdateCourseAsync(createDto);
+           var response = await _coursesService.UpdateCourseAsync(createDto);
             return CreateActionResultInstance(response);
         }
         [HttpDelete("{id}")]

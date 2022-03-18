@@ -1,4 +1,5 @@
 ﻿using Course.Web.Models;
+using Course.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,15 +13,17 @@ namespace Course.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ICatalogServices _catalogServices;
+        public HomeController(ILogger<HomeController> logger,ICatalogServices catalogServices)
         {
             _logger = logger;
+            _catalogServices = catalogServices;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var result = await _catalogServices.GetAllCoursesAsync();
+            return View(result);
         }
 
         public IActionResult Privacy()
