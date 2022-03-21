@@ -61,7 +61,8 @@ namespace Course.Web.Services
             var responseSucces = await response.Content.ReadFromJsonAsync<Response<List<CourseViewModel>>>();
             responseSucces.Data.ForEach(x =>
             {
-                x.Picture = _photoHelper.GetPhotoStockUrl(x.Picture);
+                x.StockPictureUrl = _photoHelper.GetPhotoStockUrl(x.Picture);
+
             });
             return responseSucces.Data;
         }
@@ -84,9 +85,10 @@ namespace Course.Web.Services
             var response = await _client.GetAsync($"courses/{courseId}");
             if (!response.IsSuccessStatusCode) return null;
             var responseSucces = await response.Content.ReadFromJsonAsync<Response<CourseViewModel>>();
+            responseSucces.Data.StockPictureUrl = _photoHelper.GetPhotoStockUrl(responseSucces.Data.Picture);
             return responseSucces.Data;
         }
-
+         
         public async Task<bool> UpdateCourseAsync(CourseUpdateModel model)
         {
             var resultPhoto = await _photoStockServices.UploadImage(model.PhotoFormFile);

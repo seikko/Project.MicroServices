@@ -20,9 +20,36 @@ namespace Course.Web.Extension
 {
     public static class ServiceExtension
     {
-        public static IServiceCollection ServiceConfiguration(this IServiceCollection services)
+        public static IServiceCollection ServiceConfiguration(this IServiceCollection services,IConfiguration Configuration)
         {
+            #region  ServiceApiSettings
+            var servicesApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
+            services.AddHttpClient<IUserServices, UserServices>(opt =>
+            {
 
+                opt.BaseAddress = new Uri(servicesApiSettings.IdentityBaseUrl);
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+            services.AddHttpClient<ICatalogServices, CatalogServices>(opt =>
+            {
+                //url localhost:5000/services/catalog
+                opt.BaseAddress = new Uri($"{servicesApiSettings.GatewayBaseUrl}/{servicesApiSettings.Catalog.Path}");
+            }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
+            services.AddHttpClient<IPhotoStockServices, PhotoStockServices>(opt =>
+            {
+                //url localhost:5000/services/photostock
+                opt.BaseAddress = new Uri($"{servicesApiSettings.GatewayBaseUrl}/{servicesApiSettings.PhotoStock.Path}");
+            }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
+
+            services.AddHttpClient<IBasketServices, BasketServices>(opt =>
+            {
+                //url localhost:5000/services/photostock
+                opt.BaseAddress = new Uri($"{servicesApiSettings.GatewayBaseUrl}/{servicesApiSettings.Basket.Path}");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            #endregion
+
+
+            #region Container
             services.AddSingleton<PhotoHelper>();
             services.AddScoped<ResourceOwnerPasswordTokenHandler>();
             services.AddScoped<ClientCredentialTokenHandler>();
@@ -41,7 +68,14 @@ namespace Course.Web.Extension
                 options.Cookie.Name = "Coursewebcookie";
             });
             services.AddControllersWithViews();
+            #endregion
 
+            #region Configuration
+            services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
+            services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
+            services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
+            services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
+            #endregion
             return services;
         }
     }

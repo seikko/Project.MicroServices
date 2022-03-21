@@ -33,30 +33,8 @@ namespace Course.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            #region Configuration
-            var servicesApiSettings = Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
-            services.AddHttpClient<IUserServices, UserServices>(opt =>
-            {
 
-                opt.BaseAddress = new Uri(servicesApiSettings.IdentityBaseUrl);
-            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
-            services.AddHttpClient<ICatalogServices, CatalogServices>(opt =>
-            {
-                //url localhost:5000/services/catalog
-                opt.BaseAddress = new Uri($"{servicesApiSettings.GatewayBaseUrl}/{servicesApiSettings.Catalog.Path}");
-            }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
-            services.AddHttpClient<IPhotoStockServices, PhotoStockServices>(opt =>
-            {
-                //url localhost:5000/services/photostock
-                opt.BaseAddress = new Uri($"{servicesApiSettings.GatewayBaseUrl}/{servicesApiSettings.PhotoStock.Path}");
-            }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
-            services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
-            services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
-            services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
-            services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
-
-            #endregion
-            services.ServiceConfiguration();
+            services.ServiceConfiguration(Configuration);
 
         }
 
@@ -70,7 +48,10 @@ namespace Course.Web
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+
             }
+
+
             app.UseStaticFiles();
 
             app.UseRouting();

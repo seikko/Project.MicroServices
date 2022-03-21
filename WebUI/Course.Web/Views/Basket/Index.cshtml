@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+@model BasketViewModel
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Sepet</h5>
+
+                @if (Model != null && Model.BasketItem.Any())
+                {
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Kurs Isim</th>
+                            <th>Fiyat</th>
+                            <th>Adet</th>
+                            <th>İşlemler</th>
+                        </tr>
+                        @foreach (var item in Model.BasketItem)
+                        {
+                            <tr>
+                                <td>@item.CourseName</td>
+                                <td>@item.GetCurrentPrice TL</td>
+                                <td>@item.Quantity</td>
+                                <td>
+                                    <a class="btn btn-danger" asp-controller="Basket" asp-action="RemoveBasketItem" asp-route-courseId="@item.CourseId">Sil</a>
+                                </td>
+
+
+
+                            </tr>
+                        }
+                        @if (Model.HasDiscount)
+                        {
+                            <tr>
+                                <td>Indirim oranı</td>
+                                <td colspan="2">%@Model.DiscountRate.Value</td>
+                            </tr>
+                        }
+                        <tr>
+                            <td>
+                                @(Model.HasDiscount ? "Indirimli Fiyat": "Toplam Fiyat")
+                        </td>
+                        <td colspan="2">@Model.TotalPrice TL</td>
+                    </tr>
+                </table>
+            }
+            else
+            {
+                <div class="alert-info">Sepet Boş</div>
+            }
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
