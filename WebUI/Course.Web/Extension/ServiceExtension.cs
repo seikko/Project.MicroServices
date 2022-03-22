@@ -7,6 +7,8 @@ using Course.Web.Services;
 using Course.Web.Services.Abstract;
 using Course.Web.Services.Concretes;
 using Course.Web.Services.Interfaces;
+using Course.Web.Validator;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,14 +38,17 @@ namespace Course.Web.Extension
             }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
             services.AddHttpClient<IPhotoStockServices, PhotoStockServices>(opt =>
             {
-                //url localhost:5000/services/photostock
                 opt.BaseAddress = new Uri($"{servicesApiSettings.GatewayBaseUrl}/{servicesApiSettings.PhotoStock.Path}");
             }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
 
             services.AddHttpClient<IBasketServices, BasketServices>(opt =>
             {
-                //url localhost:5000/services/photostock
                 opt.BaseAddress = new Uri($"{servicesApiSettings.GatewayBaseUrl}/{servicesApiSettings.Basket.Path}");
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            services.AddHttpClient<IDiscountServices, DiscountServices>(opt =>
+            {
+                opt.BaseAddress = new Uri($"{servicesApiSettings.GatewayBaseUrl}/{servicesApiSettings.Discount.Path}");
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
             #endregion
@@ -76,6 +81,8 @@ namespace Course.Web.Extension
             services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
             services.Configure<ServiceApiSettings>(Configuration.GetSection("ServiceApiSettings"));
             #endregion
+
+            services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CourseUpdateInputValidator>());//bana bir tane Sınıf abstractValidator'den tureyen bir sınıf ver ben onun assemblylerini bulurum
             return services;
         }
     }

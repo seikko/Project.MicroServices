@@ -7,6 +7,10 @@ namespace Course.Web.Models.Basket
 {
     public class BasketViewModel
     {
+        public BasketViewModel()
+        {
+            _basketItems = new List<BasketItemViewModel>();
+        }
         
         public string UserId { get; set; }
 
@@ -38,7 +42,7 @@ namespace Course.Web.Models.Basket
 
         public decimal TotalPrice
         {
-            get => _basketItems.Sum(x => x.GetCurrentPrice * x.Quantity);
+            get => _basketItems.Sum(x => x.GetCurrentPrice);
         }
         public bool HasDiscount
         {
@@ -56,5 +60,6 @@ namespace Course.Web.Models.Basket
             DiscountCode = code;
             DiscountRate = rate;
         }
+        
     }
 }

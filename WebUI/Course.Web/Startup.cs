@@ -8,6 +8,8 @@ using Course.Web.Services;
 using Course.Web.Services.Abstract;
 using Course.Web.Services.Concretes;
 using Course.Web.Services.Interfaces;
+using Course.Web.Validator;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +38,7 @@ namespace Course.Web
 
             services.ServiceConfiguration(Configuration);
 
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -45,7 +45,10 @@ namespace Course.Web.Controllers
             var categories = await _catalogServices.GetAllCategoryAsync();
             ViewBag.categoryList = new SelectList(categories, "Id", "Name");
 
-            if (!ModelState.IsValid) return View();
+            if (!ModelState.IsValid)
+            {
+                return View(nameof(Create));
+            }
 
             model.UserId = _sharedIdentityServices.GetUserId;
             await _catalogServices.CreateCourseAsync(model);
