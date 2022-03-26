@@ -24,16 +24,27 @@ namespace Course.Services.Order.Application.Handlers
 
         public async Task<Response<CreatedOrderDto>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            var newAddress = new Address(request.Address.Province, request.Address.District, request.Address.Street, request.Address.ZipCode, request.Address.AddresLine);
-            Services.Domain.OrderAggregate.Order newOrder = new Services.Domain.OrderAggregate.Order(request.BuyyerId, newAddress);
+            var newAddress = new Address
+                (
+                request.Address.Province ?? "",
+                request.Address.District ?? "",
+                request.Address.Street ?? "",
+                request.Address.ZipCode ?? "",
+                request.Address.AddresLine ?? ""
+                );
+            Services.Domain.OrderAggregate.Order newOrder = new(request.BuyyerId, newAddress);
             request.OrderItem.ForEach(x =>
             {
-                newOrder.AddOrderItem(x.ProductId, x.ProductName, x.Price, x.PictureUrl);
+                newOrder.AddOrderItem(
+                  x.ProductId,
+                  x.ProductName ?? "",
+                  x.Price,
+                  x.PictureUrl ?? "");
             });
             await _context.Orders.AddAsync(newOrder);
             await _context.SaveChangesAsync();
 
-            return Response<CreatedOrderDto>.Success(new CreatedOrderDto { OrderId = newOrder.Id }, 200);   
+            return Response<CreatedOrderDto>.Success(new CreatedOrderDto { OrderId = newOrder.Id }, 200);
 
         }
     }

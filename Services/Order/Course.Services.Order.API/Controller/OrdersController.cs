@@ -35,6 +35,8 @@ namespace Course.Services.Order.API.Controller
         [HttpPost]
         public async Task<IActionResult> CreateOrderAsync(CreateOrderCommand command)
         {
+
+            command.BuyyerId = _identityService.GetUserId;
             var response = await _mediater.Send(command);
             return CreateActionResultInstance(response);
         }

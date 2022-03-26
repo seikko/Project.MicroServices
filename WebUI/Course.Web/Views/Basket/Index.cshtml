@@ -78,11 +78,14 @@
                             <div asp-validation-summary="All"></div>
                         </div>
                     </form>
+                    <a class="btn btn-success" asp-controller="Order" asp-action="CheckOut">Odeme Bilgileri</a>
+                    <a class="btn btn-warning" asp-controller="Home" asp-action="Index">Alışverişe devam et </a>
                 }
                 else
                 {
                     <div class="alert-info">Sepet Boş</div>
                 }
+
 
 
 

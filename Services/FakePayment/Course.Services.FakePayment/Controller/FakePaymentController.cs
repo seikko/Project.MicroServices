@@ -1,4 +1,5 @@
-﻿using Course.Shared.ControllerBases;
+﻿using Course.Services.FakePayment.Models;
+using Course.Shared.ControllerBases;
 using Course.Shared.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +15,10 @@ namespace Course.Services.FakePayment.Controller
     public class FakePaymentController : CustomeBasController
     {
 
-        [HttpPost]
-        public IActionResult ReceivePayment()
+        [HttpPost()]
+        public IActionResult ReceivePayment(PaymentDto payment)
         {
+            //PaymentDto ile odeme
             return CreateActionResultInstance(Response<NoContent>.Success(200));
         }
     }

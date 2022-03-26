@@ -13,7 +13,7 @@ namespace Course.Web.Models.Basket
         public string CourseName { get; set; }
 
         public decimal Price { get; set; }
-
+        public string PictureUrl { get; set; }
         private decimal? DiscountAppliedPrice;
 
         public decimal GetCurrentPrice

@@ -15,6 +15,8 @@ namespace Course.Services.Domain.OrderAggregate
         private readonly List<OrderItem> _orderItems; //propertyden almak yerine field uzerınden alıyor
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;//sadece okuma 
 
+        
+        
         public Order(string buyerId, Address address)
         {
             _orderItems = new List<OrderItem>();
@@ -23,6 +25,7 @@ namespace Course.Services.Domain.OrderAggregate
                 BuyerId = buyerId;
                 Address = address;
             }
+    
         }
         public Order()
         {
