@@ -1,5 +1,7 @@
+using Course.Services.Order.Application.Consumer;
 using Course.Services.Order.Infrastructure;
 using Course.Shared.Services;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -34,6 +36,29 @@ namespace Course.Services.Order.API
         public void ConfigureServices(IServiceCollection services)
         {
 
+
+
+            services.AddMassTransit(x =>
+            {
+                x.AddConsumer<CreateOrderMessageCommandConsumer>();
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(Configuration["RabbitMQUrl"], "/", host =>
+                    {
+                        host.Username("guest");
+                        host.Password("guest");
+                    });
+
+
+                    cfg.ReceiveEndpoint("order-service", e =>//hangi kuyrugu okicak ? 
+                     {
+                         //okuma iþlemini gerceklestir.
+                         e.ConfigureConsumer<CreateOrderMessageCommandConsumer>(context);
+                     });
+                });
+            });
+
+            services.AddMassTransitHostedService();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");//token daki sub key'ini mapleme sub olarak gelsýn userid
             var requiredAutorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();//authorize olmus user beklyorum

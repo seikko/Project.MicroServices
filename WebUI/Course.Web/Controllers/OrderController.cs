@@ -22,6 +22,7 @@ namespace Course.Web.Controllers
 
         public async  Task<IActionResult> CheckOut()
         {
+
             var basket = await _basketServices.GetBasket();
             ViewBag.basket = basket;
             return View(new CheckoutInfoModel());
@@ -30,16 +31,17 @@ namespace Course.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CheckOut(CheckoutInfoModel checkoutInfoModel)
         {
-            var orderStatus = await _orderServices.OrderCreate(checkoutInfoModel);
-            if (!orderStatus.IsSuccesfull)
+            var orderStatus = await _orderServices.SuspendOrder(checkoutInfoModel);
+         //   var orderStatus = await _orderServices.OrderCreate(checkoutInfoModel); senkron iletişim rabbitmq olmadan
+            if (!orderStatus.IsSuccessful)
             {
                 var basket = await _basketServices.GetBasket();
                 ViewBag.basket = basket;
-                ViewBag.error = orderStatus.Errors;
+                ViewBag.error = orderStatus.Error;
                 return View();
             }
-            return RedirectToAction(nameof(SuccessfulCheckout),new {orderId = orderStatus.OrderId});
-
+            //return RedirectToAction(nameof(SuccessfulCheckout),new {orderId = orderStatus.OrderId});
+            return RedirectToAction(nameof(SuccessfulCheckout), new { orderId = new Random().Next(1, 10000) });
         }
 
         public IActionResult SuccessfulCheckout(int orderId)

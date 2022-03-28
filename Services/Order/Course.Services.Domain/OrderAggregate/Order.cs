@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Course.Services.Domain.OrderAggregate
 {
     public class Order : Entity, IAggregateRoot
-    {//hersey order sınıfından ılerlıcek
+    {      //hersey order sınıfından ılerlıcek
         public DateTime OrderDate { get; private set; }
         public Address Address { get; private set; }
         public string BuyerId { get; private set; }//userıd

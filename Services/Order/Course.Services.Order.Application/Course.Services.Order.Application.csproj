@@ -6,11 +6,12 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.0" />
+    <PackageReference Include="MassTransit.AspNetCore" Version="7.1.7" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="7.1.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\Course.Shared\Course.Shared.csproj" />
-    <ProjectReference Include="..\Course.Services.Domain\Course.Services.Order.Domain.csproj" />
     <ProjectReference Include="..\Course.Services.Order.Infrastructure\Course.Services.Order.Infrastructure.csproj" />
   </ItemGroup>
 
