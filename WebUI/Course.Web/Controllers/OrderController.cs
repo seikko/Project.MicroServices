@@ -43,6 +43,11 @@ namespace Course.Web.Controllers
             //return RedirectToAction(nameof(SuccessfulCheckout),new {orderId = orderStatus.OrderId});
             return RedirectToAction(nameof(SuccessfulCheckout), new { orderId = new Random().Next(1, 10000) });
         }
+        public async  Task<IActionResult> CheckoutHistory()
+        {
+            
+            return View(await _orderServices.GetOrder());
+        }
 
         public IActionResult SuccessfulCheckout(int orderId)
         {

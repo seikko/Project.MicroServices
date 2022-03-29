@@ -13,7 +13,7 @@ namespace Course.Services.Order.Application.Dtos
         public AddressDto Address { get; private set; }
         public string BuyerId { get; private set; }//userıd
 
-        public List<OrderItemDto> OrderItem { get; set; }
+        public List<OrderItemDto> OrderItems { get; set; }
 
     }
 }

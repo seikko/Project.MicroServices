@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewData["Title"] = "CheckoutHistory";
+}
+@model List<OrderViewModel>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Ödeme Geçmişi</h5>
+
+                @if (Model.Any())
+                {
+                    <table class="table table-striped table-bordered">
+                        <tr>
+                            <td>Ödeme Numarası</td>
+                            <td>Tarih</td>
+                            <td>Detay</td>
+                            
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.CreatedDate.ToShortDateString()</td>
+                                <td>
+                                   <table class="table table-striped">
+                                       <tr>
+                                           <td>Kurs ismi</td>
+                                           <td>Kurs Fiyat</td>
+                                       </tr>
+                                       @foreach (var element in item.OrderItems)
+                                       {
+                                           <tr>
+                                               <td>@element.ProductName</td>
+                                               <td>@element.Price</td>
+                                           </tr>
+                                       }
+                                   </table> 
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                }
+                else
+                {
+                    <div class="alert alert-info">Satın alınan kurs bulunamadı...</div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

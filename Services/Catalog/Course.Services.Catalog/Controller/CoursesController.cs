@@ -1,6 +1,7 @@
 ﻿using Course.Services.Catalog.Dtos;
 using Course.Services.Catalog.Services;
 using Course.Shared.ControllerBases;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,10 +16,10 @@ namespace Course.Services.Catalog.Controller
     public class CoursesController : CustomeBasController
     {
         private readonly ICourseService _coursesService;
-
         public CoursesController(ICourseService coursesService)
         {
             _coursesService = coursesService;
+            
         }
 
         [HttpGet("{id}")]

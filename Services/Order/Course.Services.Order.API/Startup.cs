@@ -41,6 +41,7 @@ namespace Course.Services.Order.API
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<CreateOrderMessageCommandConsumer>();
+                x.AddConsumer<CourseNameChanceConsumer>();
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.Host(Configuration["RabbitMQUrl"], "/", host =>
@@ -55,6 +56,13 @@ namespace Course.Services.Order.API
                          //okuma iþlemini gerceklestir.
                          e.ConfigureConsumer<CreateOrderMessageCommandConsumer>(context);
                      });
+
+                    cfg.ReceiveEndpoint("course-chance", e =>//hangi kuyrugu okicak ? 
+                    {
+                        //okuma iþlemini gerceklestir.
+                        e.ConfigureConsumer<CourseNameChanceConsumer>(context);
+                    });
+
                 });
             });
 

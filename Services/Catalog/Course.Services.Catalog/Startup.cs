@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using Course.Services.Catalog.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using MassTransit;
 
 namespace Course.Services.Catalog
 {
@@ -27,6 +28,24 @@ namespace Course.Services.Catalog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+
+            services.AddMassTransit(x =>
+            {
+                // Default Port : 5672
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(Configuration["RabbitMQUrl"], "/", host =>
+                    {
+                        host.Username("guest");
+                        host.Password("guest");
+                    });
+                });
+            });
+
+            services.AddMassTransitHostedService();
+
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
 
                 options.Authority = Configuration["IdentityServerUrl"];//  token dagýtmaktan gorevli urli alcak.

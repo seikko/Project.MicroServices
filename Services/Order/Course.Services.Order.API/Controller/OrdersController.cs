@@ -25,7 +25,6 @@ namespace Course.Services.Order.API.Controller
             _identityService = identityService;
         }
         [HttpGet]
-
         public async Task<IActionResult> GetOrders()
         {
 

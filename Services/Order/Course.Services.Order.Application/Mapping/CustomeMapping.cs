@@ -14,6 +14,7 @@ namespace Course.Services.Order.Application.Mapping
         public CustomeMapping()
         {
             CreateMap<Services.Domain.OrderAggregate.Order, OrderDto>().ReverseMap();
+            CreateMap<OrderDto, Services.Domain.OrderAggregate.Order>().ReverseMap();
             CreateMap<OrderItem, OrderItemDto>().ReverseMap();
             CreateMap<Address, AddressDto>().ReverseMap();
         }

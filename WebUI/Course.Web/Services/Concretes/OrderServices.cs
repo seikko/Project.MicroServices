@@ -29,8 +29,8 @@ namespace Course.Web.Services.Concretes
 
         public async Task<List<OrderViewModel>> GetOrder()
         {
-            var response = await _client.GetFromJsonAsync<Response<List<OrderViewModel>>>("getOrders");
-            if (!response.IsSuccessfull) return null;
+            var response = await _client.GetFromJsonAsync<Response<List<OrderViewModel>>>("orders");
+            
             return response.Data;
 
 
