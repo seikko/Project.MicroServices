@@ -42,7 +42,7 @@ namespace Course.IdentityServer
               new ApiScope("basket_fullpermisson","Basket API için full erişim"),
               new ApiScope("discount_fullpermisson","Discount API için full erişim"),
               new ApiScope("order_fullpermisson","Order API için full erişim"),
-              new ApiScope("payment_fullpermisson","Order API için full erişim"),
+              new ApiScope("payment_fullpermisson","Payment API için full erişim"),
               new ApiScope("gateway_fullpermisson","Gatway için full erişim"),
               new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
             };
@@ -67,7 +67,9 @@ namespace Course.IdentityServer
                   AllowOfflineAccess = true, // OfflineAccess icin izin
                   ClientSecrets = {new Secret("secret".Sha256())}, 
                   AllowedGrantTypes =GrantTypes.ResourceOwnerPassword, //postmandan istek atarken grant_type password ?,
-                  AllowedScopes = { "basket_fullpermisson", "discount_fullpermisson","order_fullpermisson", "payment_fullpermisson", "gateway_fullpermisson", IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.Address, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess, IdentityServerConstants.LocalApi.ScopeName, "roles" }, //Token icinde neler gondereyim.
+                  AllowedScopes = { "basket_fullpermisson","order_fullpermisson",  "gateway_fullpermisson", IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.Address, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile, IdentityServerConstants.StandardScopes.OfflineAccess, IdentityServerConstants.LocalApi.ScopeName, "roles" }, //bu izinlere sahip olan token'i ver 
+                  
+                  //Token icinde neler gondereyim.
                   //OfflineAccess = kullanıcı offline olsa dahi ben elimdeki refresh token ile kullanıcı ıcın yeni bir token alabilirim. OfllineAccess i kaldırırsak  elimde refresh token olmadıgı ıcın kullanıcıdan email ve password almak zorundayım. 
                    AccessTokenLifetime = 1*60*60, //AccessToken'in omru
                    RefreshTokenExpiration = TokenExpiration.Absolute,
@@ -75,7 +77,19 @@ namespace Course.IdentityServer
                    RefreshTokenUsage = TokenUsage.ReUse
 
 
-                   }
+                   },
+               
+                   new Client
+              {
+
+                       ///Gateway client ile birlikte identity server'a istek yapacak
+                  ClientName = "Token Exchange Client",  
+                  ClientId = "TokenExhangeClient",   
+                  ClientSecrets = {new Secret("secret".Sha256())},  
+                  AllowedGrantTypes =new []{ "urn:ietf:params:oauth:grant-type:token-exchange" },
+                  AllowedScopes={ "discount_fullpermisson", "payment_fullpermisson", IdentityServerConstants.StandardScopes.OpenId } //Bu izinlere sahip olan token'i al
+
+              },
 
               };
     };

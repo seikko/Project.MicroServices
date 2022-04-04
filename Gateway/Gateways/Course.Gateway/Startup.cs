@@ -1,3 +1,4 @@
+using Course.Gateway.DelegateHandlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,7 @@ namespace Course.Gateway
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient<TokenExhangeDelegateHandler>();
 
             services.AddAuthentication().AddJwtBearer("GatewayAuthenticationScheme", options =>
             {
@@ -37,7 +39,8 @@ namespace Course.Gateway
 
 
             });
-            services.AddOcelot();
+            services.AddOcelot().AddDelegatingHandler<TokenExhangeDelegateHandler>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

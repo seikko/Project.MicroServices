@@ -1,4 +1,4 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
+﻿ // Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
@@ -58,7 +58,7 @@ namespace Course.IdentityServer
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
             builder.AddResourceOwnerValidator<IdentityResourcesOwnerPasswordValidation>();
-
+            builder.AddExtensionGrantValidator<TokenExchangeExtensionGrantValidator>();
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {
