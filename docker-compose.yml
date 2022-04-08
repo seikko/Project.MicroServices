@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  catalogdb:
+    image: mongo
+  basketdb:
+    image: redis
+  discount:
+    image: postgres
+  identitydb:
+    image: mcr.microsoft.com/mssql/server
+  orderdb:
+    image: mcr.microsoft.com/mssql/server
+  rabbitmq:
+    image: rabbitmq:3.8.14-management
+  catalog.api:
+   image: catalog_api_image
+   build:
+    context: .
+    dockerfile: Services/Catalog/Course.Services.Catalog/DockerFile
+
+  identityserver.api:
+   image: identityserver_api_image
+   build:
+    context: .
+    dockerfile: IdentityServer/Course.IdentityServer/DockerFile
+  
+volumes:
+  catalogdb_volume:
+  discount_volume:
+  identity_volume:
+  orderdb_volume:
