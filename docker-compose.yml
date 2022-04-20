@@ -17,15 +17,46 @@ services:
    build:
     context: .
     dockerfile: Services/Catalog/Course.Services.Catalog/DockerFile
-
   identityserver.api:
    image: identityserver_api_image
    build:
     context: .
     dockerfile: IdentityServer/Course.IdentityServer/DockerFile
-  
+  basket.api:
+    image: basket_api_image
+    build:
+      context: .
+      dockerfile: Services\Basket\Course.Services.Basket\DockerFile
+  photostock.api:
+    image: photostock_api_image
+    build:
+      context: .
+      dockerfile: Services\PhotoStockl\Course.Services.PhotoStock\DockerFile
+  discount.api:
+    image: discount_api_image
+    build:
+      context: .
+      dockerfile: Services\Discount\Course.Services.Discount\DockerFile   
+  payment.api:
+    image: payment_api_image
+    build:
+      context: .
+      dockerfile: Services\FakePayment\Course.Services.FakePayment\DockerFile  
+  order.api:
+   image: order_api_image
+   build:
+     context: .
+     dockerfile: Services\Order\Course.Services.Order.API\DockerFile 
+
+  gateway.api:
+   image: gatway_api_image
+   build:
+     context: .
+     dockerfile: Gateway\Gateways\Course.Gateway\DockerFile
+      
 volumes:
   catalogdb_volume:
   discount_volume:
   identity_volume:
   orderdb_volume:
+  

@@ -51,6 +51,7 @@ services:
       - "15672:15672"
   catalog.api:
    container_name: catalog.api
+   restart: on-failure
    environment: 
    - ASPNETCORE_ENVIRONMENT=Development
    - RabbitMQUrl=rabbitmq
@@ -60,6 +61,77 @@ services:
      - "5011:80"
    depends_on:
      - catalogdb
+  basket.api:
+
+    container_name: basket.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerUrl=http://identityserver.api
+      - RedisSettings:Port=6379
+      - RedisSettings:Host=basketdb
+
+    ports:
+      - "5013:80"
+    depends_on:
+      - basketdb
+  photostock.api:
+    container_name: photostock.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerUrl=http://identityserver.api
+   
+
+    ports:
+      - "5012:80"
+    volumes:
+      - type: bind
+        source: C:\Users\Sakca\OneDrive\Masaüstü/photos
+        target: /app/wwwroot/photos
+  discount.api:
+
+    container_name: discount.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerUrl=http://identityserver.api
+      - "ConnectionStrings:PostgreSql=User ID= postgres;Password=123;Server=discountdb;Port=5432;Database=discountdb;Integrated Security=true;Pooling=true"
+
+    ports:
+      - "5014:80"
+    depends_on:
+      - discount  
+  payment.api:
+    container_name: payment.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerUrl=http://identityserver.api
+      - RabbitMQUrl=rabbitmq
+    ports:
+      - "5016:80"
+  order.api:
+    container_name: order.api
+    restart: on-failure
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerUrl=http://identityserver.api
+      - RabbitMQUrl=rabbitmq
+      - "ConnectionStrings:DefaultConnection=Server=orderdb,1433;Database=SqlServer; User=sa; Password=Password12*"
+      
+    ports:
+      - "5015:80"
+    depends_on:
+      - orderdb
+  gateway.api:
+    container_name: gateway.api
+     
+    environment:
+      - ASPNETCORE_ENVIRONMENT=procution
+      - IdentityServerUrl=http://identityserver.api
+       
+      
+    ports:
+      - "5000:80"
+ 
+   
   identityserver.api:
    container_name: identityserver.api
    restart: on-failure
